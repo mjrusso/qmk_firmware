@@ -1,15 +1,16 @@
-// Copied from Callum's userspace: https://github.com/callum-oakley/qmk_firmware/blob/master/users/callum/oneshot.c
+// Adapted from Callum's userspace: https://github.com/callum-oakley/qmk_firmware/blob/master/users/callum/oneshot.c
 
 #pragma once
 
 #include QMK_KEYBOARD_H
 
-// Represents the four states a oneshot key can be in
+// Represents the states a oneshot key can be in
 typedef enum {
     os_up_unqueued,
     os_up_queued,
     os_down_unused,
     os_down_used,
+    os_to_clear,
 } oneshot_state;
 
 // Custom oneshot mod implementation that doesn't rely on timers. If a mod is

@@ -1,4 +1,8 @@
-// Copied from Callum's userspace: https://github.com/callum-oakley/qmk_firmware/blob/master/users/callum/oneshot.c
+// Adapted from Callum's userspace: https://github.com/callum-oakley/qmk_firmware/blob/master/users/callum/oneshot.c
+//
+// Changes: queued oneshot keys are consumed on keyup, instead of keydown. This
+// prevents the oneshot modifier from being applied multiple times, in cases
+// where the user is typing very quickly.
 
 #include "oneshot.h"
 
@@ -9,15 +13,21 @@ void update_oneshot(
     uint16_t keycode,
     keyrecord_t *record
 ) {
+
+    if (*state == os_to_clear) {
+        *state = os_up_unqueued;
+        unregister_code(mod);
+    }
+
     if (keycode == trigger) {
         if (record->event.pressed) {
-            // Trigger keydown
+            // Trigger keydown.
             if (*state == os_up_unqueued) {
                 register_code(mod);
             }
             *state = os_down_unused;
         } else {
-            // Trigger keyup
+            // Trigger keyup.
             switch (*state) {
             case os_down_unused:
                 // If we didn't use the mod while trigger was held, queue it.
@@ -38,17 +48,14 @@ void update_oneshot(
                 // Cancel oneshot on designated cancel keydown.
                 *state = os_up_unqueued;
                 unregister_code(mod);
-            }
-        } else {
-            if (!is_oneshot_ignored_key(keycode)) {
-                // On non-ignored keyup, consider the oneshot used.
+            } else if (!is_oneshot_ignored_key(keycode)) {
+                // On non-ignored keydown, consider the oneshot used.
                 switch (*state) {
                 case os_down_unused:
                     *state = os_down_used;
                     break;
                 case os_up_queued:
-                    *state = os_up_unqueued;
-                    unregister_code(mod);
+                    *state = os_to_clear;
                     break;
                 default:
                     break;
