@@ -66,16 +66,25 @@ enum custom_keycodes {
 
 };
 
+
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-   [BASE] = LAYOUT_moonlander(
-        KC_GRAVE, _______, _______, _______, _______, _______, _______,                 _______, _______, _______,         _______,         _______, _______, _______,
-        KC_TAB,   KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    _______,                 _______, KC_Y,    KC_U,            KC_I,            KC_O,    KC_P,    _______,
-        KC_LCTL,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    _______,                 _______, KC_H,    KC_J,            KC_K,            KC_L,    KC_QUOT, _______,
-        KC_LSFT,  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                                      KC_N,    KC_M,            KC_COMM,         KC_DOT,  KC_SLSH, _______,
-        KC_LCTL,  _______, _______, KC_LOPT, KC_LCMD,          LA_KEEB,                 LA_KEEB,          LT(NUM, KC_SPC), LT(FUN, KC_ESC), _______, _______, _______,
-                                             LT(NAV, KC_BSPC), LA_MOUSE, LA_MACRO,      LA_NUM,  LA_NAV,  LT(SYM, KC_ENT)
+   /* [BASE] = LAYOUT_moonlander( */
+   /*      KC_GRAVE, _______, _______, _______, _______, _______, _______,                 _______, _______, _______,         _______,         _______, _______, _______, */
+   /*      KC_TAB,   KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    _______,                 _______, KC_Y,    KC_U,            KC_I,            KC_O,    KC_P,    _______, */
+   /*      KC_LCTL,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    _______,                 _______, KC_H,    KC_J,            KC_K,            KC_L,    KC_QUOT, _______, */
+   /*      KC_LSFT,  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                                      KC_N,    KC_M,            KC_COMM,         KC_DOT,  KC_SLSH, _______, */
+   /*      KC_LCTL,  _______, _______, KC_LOPT, KC_LCMD,          LA_KEEB,                 LA_KEEB,          LT(NUM, KC_SPC), LT(FUN, KC_ESC), _______, _______, _______, */
+   /*                                           LT(NAV, KC_BSPC), LA_MOUSE, LA_MACRO,      LA_NUM,  LA_NAV,  LT(SYM, KC_ENT) */
+   /*  ), */
 
+  [BASE] = LAYOUT_moonlander(
+        _______, _______, _______, _______,  _______, _______, _______,                 _______, _______, _______,         _______,  _______, _______, _______,
+        _______, KC_Q,    KC_W,    KC_E,     KC_R,    KC_T,    _______,                 _______, KC_Y,    KC_U,            KC_I,    KC_O,    KC_P,    _______,
+        _______, KC_A,    KC_S,    KC_D,     KC_F,    KC_G,    _______,                 _______, KC_H,    KC_J,            KC_K,    KC_L,    KC_QUOT, _______,
+        KC_LSFT, KC_Z,    KC_X,    KC_C,     KC_V,    KC_B,                                      KC_N,    KC_M,            KC_COMM, KC_DOT,  KC_SLSH, _______,
+        KC_LCTL, _______, _______, LA_MOUSE, LA_NAV,           LA_MACRO,                KC_ESC,           LT(NUM, KC_SPC), LA_FUN,   _______, _______, _______,
+                                             KC_BSPC, KC_TAB,  KC_GRAVE,                LA_KEEB, _______, LT(SYM, KC_ENT)
     ),
 
    [NAV] = LAYOUT_moonlander(
@@ -105,7 +114,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                             KC_UNDS, KC_TRNS, KC_TRNS,                KC_TRNS, KC_TRNS, KC_TRNS
     ),
 
-   [FUN] = LAYOUT_moonlander(
+    [FUN] = LAYOUT_moonlander(
         _______, _______, _______, _______, _______, _______, _______,                 _______, _______, _______, _______, _______, _______, _______,
         _______, KC_F12,  KC_F7,   KC_F8,   KC_F9,   _______, _______,                 _______, _______, _______, _______, _______, _______, _______,
         _______, KC_F11,  KC_F4,   KC_F5,   KC_F6,   _______, _______,                 _______, _______, OS_CMD,  OS_ALT,  OS_CTRL, OS_SHFT, _______,
@@ -143,9 +152,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 };
 
+// Defines the keys to cancel oneshot mods.
 bool is_oneshot_cancel_key(uint16_t keycode) {
+  return false; // TODO testing;
     switch (keycode) {
-    case LT(NAV, KC_BSPC): // TODO do I need this? what about the other one for LA_NAV?
     case LA_NAV:
     case LA_NUM:
     case LA_SYM:
@@ -159,9 +169,12 @@ bool is_oneshot_cancel_key(uint16_t keycode) {
     }
 }
 
+// Defines keys to ignore when determining
+// whether a oneshot mod has been used. Setting this to modifiers and layer
+// change keys allows stacking multiple oneshot modifiers, and carrying them
+// between layers.
 bool is_oneshot_ignored_key(uint16_t keycode) {
     switch (keycode) {
-    case LT(NAV, KC_BSPC): // TODO do I need this? what about the other one for LA_NAV?
     case LA_NAV:
     case LA_NUM:
     case LA_SYM:
@@ -169,7 +182,8 @@ bool is_oneshot_ignored_key(uint16_t keycode) {
     case LA_MOUSE:
     case LA_MACRO:
     case LA_KEEB:
-    case KC_LSFT:
+      //  case KC_LSFT:
+      //   case KC_LCTL:
     case OS_SHFT:
     case OS_CTRL:
     case OS_ALT:
@@ -179,6 +193,7 @@ bool is_oneshot_ignored_key(uint16_t keycode) {
         return false;
     }
 }
+
 
 oneshot_state os_shft_state = os_up_unqueued;
 oneshot_state os_ctrl_state = os_up_unqueued;
