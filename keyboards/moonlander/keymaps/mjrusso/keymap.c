@@ -65,30 +65,12 @@ enum custom_keycodes {
     OS_ALT,
     OS_CMD,
 
-    SW_WIN_F,  // Switch to next window         (cmd-tab)
-    SW_WIN_B,  // Switch to prev window         (cmd-`)
+    APP_SW_N,  // Switch to next app (cmd-tab)
+    APP_SW_P,  // Switch to prev app (cmd-`)
 };
 
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-   /* [BASE] = LAYOUT_moonlander( */
-   /*      KC_GRAVE, _______, _______, _______, _______, _______, _______,                 _______, _______, _______,         _______,         _______, _______, _______, */
-   /*      KC_TAB,   KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    _______,                 _______, KC_Y,    KC_U,            KC_I,            KC_O,    KC_P,    _______, */
-   /*      KC_LCTL,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    _______,                 _______, KC_H,    KC_J,            KC_K,            KC_L,    KC_QUOT, _______, */
-   /*      KC_LSFT,  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                                      KC_N,    KC_M,            KC_COMM,         KC_DOT,  KC_SLSH, _______, */
-   /*      KC_LCTL,  _______, _______, KC_LOPT, KC_LCMD,          LA_KEEB,                 LA_KEEB,          LT(NUM, KC_SPC), LT(FUN, KC_ESC), _______, _______, _______, */
-   /*                                           LT(NAV, KC_BSPC), LA_MOUSE, LA_MACRO,      LA_NUM,  LA_NAV,  LT(SYM, KC_ENT) */
-   /*  ), */
-
-  /* [BASE] = LAYOUT_moonlander( */
-  /*       _______, _______, _______, _______,  _______,            _______, _______,                 _______, _______, _______,         _______,  _______, _______, _______, */
-  /*       _______, KC_Q,    KC_W,    KC_E,     KC_R,               KC_T,    _______,                 _______, KC_Y,    KC_U,            KC_I,    KC_O,    KC_P,    _______, */
-  /*       _______, KC_A,    KC_S,    KC_D,     KC_F,               KC_G,    _______,                 _______, KC_H,    KC_J,            KC_K,    KC_L,    KC_QUOT, _______, */
-  /*       _______, KC_Z,    KC_X,    KC_C,     KC_V,               KC_B,                                      KC_N,    KC_M,            KC_COMM, KC_DOT,  KC_SLSH, _______, */
-  /*       KC_LCTL, _______, _______, KC_LALT,  LA_NAV,             LA_MACRO,                         KC_ESC,           LT(NUM, KC_SPC), LA_FUN,   _______, _______, _______, */
-  /*                                            LT(MOUSE, KC_BSPC), KC_TAB,  KC_ESC,                  LA_KEEB, _______, LT(SYM, KC_ENT) */
-  /*   ), */
-
 
   [BASE] = LAYOUT_moonlander(
         _______, _______, _______, _______,  _______,          _______, _______,                 _______, _______, _______,         _______,  _______, _______, _______,
@@ -103,7 +85,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, _______, _______, _______,  _______,  _______, _______,                 _______, _______, _______, _______, _______, _______, _______,
         _______, _______, _______, _______,  _______,  _______, _______,                 _______, KC_HOME, BACK,    TAB_L,   TAB_R,   FWD,     _______,
         _______, OS_CTRL, OS_ALT,  OS_SHFT,  OS_CMD,   _______, _______,                 _______, KC_CAPS, KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, _______,
-        _______, _______, _______, SW_WIN_B, SW_WIN_F, _______,                                   KC_END,  SEL_L,   KC_PGDN, KC_PGUP, SEL_R,   _______,
+        _______, _______, _______, APP_SW_P, APP_SW_N, _______,                                   KC_END,  SEL_L,   KC_PGDN, KC_PGUP, SEL_R,   _______,
         _______, _______, _______, KC_TRNS,  KC_TRNS,           KC_TRNS,                 KC_TRNS,          KC_TRNS, KC_TRNS, _______, _______, _______,
                                              KC_TRNS,  KC_TRNS, KC_TRNS,                 KC_TRNS, KC_TRNS, KC_TRNS
     ),
@@ -180,10 +162,7 @@ bool is_oneshot_cancel_key(uint16_t keycode) {
     }
 }
 
-// Defines keys to ignore when determining
-// whether a oneshot mod has been used. Setting this to modifiers and layer
-// change keys allows stacking multiple oneshot modifiers, and carrying them
-// between layers.
+// Defines keys to ignore when determining whether a oneshot mod has been used.
 bool is_oneshot_ignored_key(uint16_t keycode) {
     switch (keycode) {
     case LA_NAV:
@@ -204,7 +183,7 @@ bool is_oneshot_ignored_key(uint16_t keycode) {
     }
 }
 
-bool sw_win_active = false;
+bool app_switcher_active = false;
 
 oneshot_state os_shft_state = os_up_unqueued;
 oneshot_state os_ctrl_state = os_up_unqueued;
@@ -221,7 +200,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
 
     update_app_switcher(
-        &sw_win_active, SW_WIN_F, SW_WIN_B,
+        &app_switcher_active, APP_SW_N, APP_SW_P,
         keycode, record
     );
 
