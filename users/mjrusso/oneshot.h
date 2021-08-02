@@ -1,4 +1,4 @@
-// Adapted from Callum's userspace: https://github.com/callum-oakley/qmk_firmware/blob/master/users/callum/oneshot.c
+// Adapted from Callum's userspace: https://github.com/callum-oakley/qmk_firmware/blob/master/users/callum/oneshot.h
 
 #pragma once
 

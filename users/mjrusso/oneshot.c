@@ -1,8 +1,8 @@
 // Adapted from Callum's userspace: https://github.com/callum-oakley/qmk_firmware/blob/master/users/callum/oneshot.c
 //
-// Changes: queued oneshot keys are consumed on keyup, instead of keydown. This
-// prevents the oneshot modifier from being applied multiple times, in cases
-// where the user is typing very quickly.
+// Changes: queued oneshot keys are now consumed on keydown, instead of keyup.
+// This prevents the oneshot modifier from being applied multiple times when
+// the user is typing very quickly.
 
 #include "oneshot.h"
 
