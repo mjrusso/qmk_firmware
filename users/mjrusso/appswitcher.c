@@ -26,16 +26,11 @@ void update_app_switcher(
                 register_code(hold_key);
             }
             if (keycode == primary_trigger) {
-                register_code(KC_TAB);
+                tap_code(KC_TAB);
             } else {
-                register_code(KC_GRAVE);
+                tap_code(KC_GRAVE);
             }
         } else {
-            if (keycode == primary_trigger) {
-                unregister_code(KC_TAB);
-            } else {
-                unregister_code(KC_GRAVE);
-            }
             // Don't unregister hold_key until some other key is hit or released.
         }
     } else if (*active) {
