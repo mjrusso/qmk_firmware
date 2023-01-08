@@ -32,7 +32,8 @@ enum layers {
     FUN,
     MOUSE,
     MACRO,
-    KEEB
+    KEEB,
+    SPC // "Special" layer, with WASD + arrow keys, media keys, etc.
 };
 
 #define LA_NAV MO(NAV)
@@ -77,7 +78,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TAB,  KC_Q,    KC_W,    KC_E,     KC_R,             KC_T,    _______,                 _______, KC_Y,    KC_U,            KC_I,    KC_O,    KC_P,     KC_GRAVE,
         KC_LCTL, KC_A,    KC_S,    KC_D,     KC_F,             KC_G,    _______,                 _______, KC_H,    KC_J,            KC_K,    KC_L,    KC_QUOT,  _______,
         KC_LSFT, KC_Z,    KC_X,    KC_C,     KC_V,             KC_B,                                      KC_N,    KC_M,            KC_COMM, KC_DOT,  KC_SLSH,  _______,
-        _______, _______, _______, KC_LALT,  KC_LCMD,          KC_ESC,                           KC_ESC,           LT(NUM, KC_SPC), LA_FUN,   _______, _______, _______,
+        _______, _______, _______, KC_LALT,  KC_LCMD,          KC_ESC,                           TG(SPC),          LT(NUM, KC_SPC), LA_FUN,   _______, _______, _______,
                                              LT(NAV, KC_BSPC), _______, _______,                 _______, _______, LT(SYM, KC_ENT)
     ),
 
@@ -142,6 +143,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, _______, _______, _______, _______, _______,                             _______, _______, _______, _______,   RGB_MOD, _______,
         _______, _______, _______, _______, _______,          _______,           _______,          _______, _______, _______,   _______, _______,
                                             _______, _______, _______,           _______, _______, _______
+    ),
+
+    [SPC] = LAYOUT_moonlander(
+        _______, _______, _______, _______, _______, _______, _______,           _______, _______, _______, _______, _______, _______, _______,
+        _______, _______, KC_W,    _______, _______, _______, _______,           _______, _______, _______, KC_UP,   _______, KC_MUTE, KC_VOLU,
+        _______, KC_A,    KC_S,    KC_D,    _______, _______, _______,           _______, _______, KC_LEFT, KC_DOWN, KC_RGHT, _______, KC_VOLD,
+        _______, _______, _______, _______, _______, _______,                             _______, _______, _______, _______, _______, KC_MPLY,
+        _______, _______, _______, _______, _______,          _______,           _______,          KC_SPC,  _______, _______, _______, _______,
+                                            _______, _______, _______,           _______, _______, KC_ENT
     ),
 
 };
