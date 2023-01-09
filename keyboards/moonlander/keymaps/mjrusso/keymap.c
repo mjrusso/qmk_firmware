@@ -33,7 +33,12 @@ enum layers {
     MOUSE,
     MACRO,
     KEEB,
-    SPC // "Special" layer, with WASD + arrow keys, media keys, etc.
+    SPEC // "Special" layer, with WASD + arrow keys (with the arrow keys
+         // arranged in a standard inverted 'T' pattern), plus media keys and a
+         // few other niceties. This is useful for a variety of activities,
+         // such as gaming, navigating through slide decks, etc., because it is
+         // configured to be toggled on/off (vs. only activating when a key is
+         // held).
 };
 
 #define LA_NAV MO(NAV)
@@ -74,12 +79,12 @@ enum custom_keycodes {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [BASE] = LAYOUT_moonlander(
-        _______, _______, _______, _______,  _______,          _______, _______,                 _______, _______, _______,         _______,  _______, _______, _______,
-        KC_TAB,  KC_Q,    KC_W,    KC_E,     KC_R,             KC_T,    _______,                 _______, KC_Y,    KC_U,            KC_I,    KC_O,    KC_P,     KC_GRAVE,
-        KC_LCTL, KC_A,    KC_S,    KC_D,     KC_F,             KC_G,    _______,                 _______, KC_H,    KC_J,            KC_K,    KC_L,    KC_QUOT,  _______,
-        KC_LSFT, KC_Z,    KC_X,    KC_C,     KC_V,             KC_B,                                      KC_N,    KC_M,            KC_COMM, KC_DOT,  KC_SLSH,  _______,
-        _______, _______, _______, KC_LALT,  KC_LCMD,          KC_ESC,                           TG(SPC),          LT(NUM, KC_SPC), LA_FUN,   _______, _______, _______,
-                                             LT(NAV, KC_BSPC), _______, _______,                 _______, _______, LT(SYM, KC_ENT)
+        _______, _______, _______, _______,  _______,          _______, _______,                 _______,  _______, _______,         _______,  _______, _______, _______,
+        KC_TAB,  KC_Q,    KC_W,    KC_E,     KC_R,             KC_T,    _______,                 _______,  KC_Y,    KC_U,            KC_I,    KC_O,    KC_P,     KC_GRAVE,
+        KC_LCTL, KC_A,    KC_S,    KC_D,     KC_F,             KC_G,    _______,                 _______,  KC_H,    KC_J,            KC_K,    KC_L,    KC_QUOT,  _______,
+        KC_LSFT, KC_Z,    KC_X,    KC_C,     KC_V,             KC_B,                                       KC_N,    KC_M,            KC_COMM, KC_DOT,  KC_SLSH,  _______,
+        _______, _______, _______, KC_LALT,  KC_LCMD,          KC_ESC,                           TG(SPEC),          LT(NUM, KC_SPC), LA_FUN,   _______, _______, _______,
+                                             LT(NAV, KC_BSPC), _______, _______,                 _______,  _______, LT(SYM, KC_ENT)
     ),
 
    [NAV] = LAYOUT_moonlander(
@@ -145,7 +150,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                             _______, _______, _______,           _______, _______, _______
     ),
 
-    [SPC] = LAYOUT_moonlander(
+    [SPEC] = LAYOUT_moonlander(
         _______, _______, _______, _______, _______, _______, _______,           _______, _______, _______, _______, _______, _______, _______,
         _______, _______, KC_W,    _______, _______, _______, _______,           _______, _______, _______, KC_UP,   _______, KC_MUTE, KC_VOLU,
         _______, KC_A,    KC_S,    KC_D,    _______, _______, _______,           _______, _______, KC_LEFT, KC_DOWN, KC_RGHT, _______, KC_VOLD,
