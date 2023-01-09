@@ -156,6 +156,45 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 };
 
+void keyboard_post_init_user(void) {
+    // Set the default RGB matrix effect.
+    //
+    // For all effects, see:
+    // https://docs.qmk.fm/#/feature_rgb_matrix?id=rgb-matrix-effects
+    //
+    // To disable entirely, pass in `RGB_MATRIX_NONE`.
+    rgb_matrix_mode_noeeprom(RGB_MATRIX_PIXEL_RAIN);
+}
+
+// Use RGB to indicate which layer we're on.
+//
+// For documentation, see:
+// https://docs.qmk.fm/#/feature_rgb_matrix?id=indicator-examples
+bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
+    for (uint8_t i = led_min; i < led_max; i++) {
+        switch(get_highest_layer(layer_state|default_layer_state)) {
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+                break;
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+                rgb_matrix_set_color(i, RGB_TURQUOISE);
+                break;
+            case 8:
+                rgb_matrix_set_color(i, RGB_BLUE);
+                break;
+            default:
+                rgb_matrix_set_color(i, RGB_OFF);
+                break;
+        }
+    }
+    return false;
+}
+
 // Defines the keys to cancel oneshot mods.
 bool is_oneshot_cancel_key(uint16_t keycode) {
     switch (keycode) {
