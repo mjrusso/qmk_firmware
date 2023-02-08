@@ -30,3 +30,7 @@
 
 // Switch RGB lighting off when the host sleeps.
 #define RGBLIGHT_SLEEP
+
+// Automatically turn off RGB lighting after the defined period of inactivity
+// (in milliseconds).
+#define RGB_MATRIX_TIMEOUT 900000
